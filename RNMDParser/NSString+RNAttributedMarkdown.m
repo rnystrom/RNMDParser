@@ -251,14 +251,18 @@ static CGFloat kDefaultFontSize = 15.f;
 @implementation NSString (RNAttributedMarkdown)
 
 // order matters here, somewhat
-// bold MUST happen before italics
+// bold MUST happen before italicsx 
 - (NSAttributedString*)markdownAttributedString {
     // strip & break on newlines so we don't run into issues like UL being formmated as EM
     NSArray *splitString = [self componentsSeparatedByString:@"\n"];
     NSMutableAttributedString *combinedString = [[NSMutableAttributedString alloc] init];
     
     [splitString enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
-        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:text];
+        NSMutableAttributedString *attrString = [[[NSAttributedString alloc] initWithString:text] mutableCopy];
+        // base font
+        UIFont *font = [UIFont systemFontOfSize:kDefaultFontSize];
+        CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
+        [attrString addAttribute:(NSString*)kCTFontAttributeName value:(__bridge id)fontRef range:NSMakeRange(0, [attrString.string length])];
         
         NSAttributedString *headerString = [attrString formattedHeader];
         NSAttributedString *ulString = [headerString formattedUnorderedList];
