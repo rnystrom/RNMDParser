@@ -30,6 +30,9 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
+    // drawrect sample used from
+    // https://github.com/mluton/SimpleCoreText/blob/master/SimpleCoreText/CoreTextView.m
+    
     // We're about to start the drawing. Save the graphics context because
     // we're going to be doing some stuff to it and will want to return the
     // graphics context to its original state when we're done.
